@@ -1,4 +1,4 @@
-library(plyr)
+#' @import plyr 
 
 Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5){
   
@@ -32,7 +32,7 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   agg <- aggregate(interact~ComponentIndex, data = edges_m[-which(edges_m$ComponentIndex == -1),], paste0, collapse=",")
   
   agg_c <- strsplit(as.character(agg$interact),split = ",")
-  c <- lapply(agg_c,count)
+  c <- lapply(agg_c,plyr::count)
   topX <- lapply(c, function(x) x[order(x$freq,decreasing=T), ])
   topX <- lapply(topX, function(x) x[1:top,1])
   topX <- unlist(lapply(topX, paste0, collapse = ","))
