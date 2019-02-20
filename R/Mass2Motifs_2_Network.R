@@ -1,26 +1,19 @@
 library(plyr)
 
-Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5, ids = "none"){
+Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5){
   
-  if (length(ids) != 1){
-    #Document ID in motifs corresponds to the row index of ids, shared.name can be retrieved from cluster.index
-    motifs$Document <- gsub('.*\\_', '', motifs$Document)
-    motifs$shared.name <- ids[as.numeric(motifs$Document),"cluster.index"]
-    # reorder columns
-    motifs <- motifs[,c("shared.name","Document","Motif","Probability","Overlap.Score","Precursor.Mass","Retention.Time","Document.Annotation")]
-  }
-  
-  if (length(ids) ==1 & colnames(motifs)[1] != "shared.name"){
-    colnames(motifs)[1] <- "shared.name"
+  if (colnames(motifs)[1] != "scans"){
+    print("WARNING: First column is used for ID matching")
+    colnames(motifs)[1] <- "scans"
   }
    
   # set cutoff for motifs to be included: Probability min. 0.01 and Overlap min 0.3 is default
-  motifs <- motifs[intersect(which(motifs$Probability >= prob), which(motifs$Overlap.Score >= overlap)),]
+  motifs <- motifs[intersect(which(motifs$probability >= prob), which(motifs$overlap >= overlap)),]
   
   # create additional column in edges file containing shared motifs between each node pair
   shared_motifs <- function(nodes){
-    a <- motifs$Motif[motifs$shared.name %in% nodes[1]]
-    b <- motifs$Motif[motifs$shared.name %in% nodes[2]]
+    a <- motifs$motif[motifs$scans %in% nodes[1]]
+    b <- motifs$motif[motifs$scans %in% nodes[2]]
     out <- paste(sort(intersect(a,b)),collapse = ",")
     return(out)
   }
@@ -55,7 +48,7 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   
   # create node table containing overlap scores of motifs per node
   motifs[-1] = apply(motifs[-1],2,as.character)
-  motifs_cytoscape <- aggregate(motifs[-1],by=list(motifs$shared.name),c)
+  motifs_cytoscape <- aggregate(motifs[-1],by=list(motifs$scans),c)
   
   ul <- function(lcol){
     if(is.list(lcol)==TRUE){
@@ -66,18 +59,18 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   
   motifs_cytoscape <- as.data.frame(apply(motifs_cytoscape,2,ul),stringsAsFactors = F)
   
-  splitmot <- unique(unlist(strsplit(motifs_cytoscape$Motif, ",")))
+  splitmot <- unique(unlist(strsplit(motifs_cytoscape$motif, ",")))
   
   mat <- matrix("0.00",nrow(motifs_cytoscape),length(splitmot))
   colnames(mat) <- splitmot
   
   for (i in 1:nrow(motifs_cytoscape)){
-    w <- match(unlist(strsplit(motifs_cytoscape$Motif[i],",")), colnames(mat))
-    mat[i,w] <- unlist(strsplit(motifs_cytoscape$Overlap.Score[i],","))
+    w <- match(unlist(strsplit(motifs_cytoscape$motif[i],",")), colnames(mat))
+    mat[i,w] <- unlist(strsplit(motifs_cytoscape$overlap[i],","))
   }
   
   mat <- cbind(motifs_cytoscape,mat)
-  colnames(mat)[1] <- "shared.name"
+  colnames(mat)[1] <- "scans"
   
   return(list(edges = edges, nodes = mat))
 }
