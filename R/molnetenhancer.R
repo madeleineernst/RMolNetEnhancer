@@ -1,4 +1,4 @@
-#' Map Mass2Motifs on mass spectral molecular network
+#' Mass2Motif_2_Network
 #'
 #' @param edges edges file from GNPS
 #' @param motifs motif summary table from MS2LDA
@@ -11,6 +11,7 @@
 #'
 #' @examples
 #' @import stats 
+#' @import plyr 
 
 Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5){
   
