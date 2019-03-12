@@ -1,4 +1,16 @@
-#' @import plyr 
+#' Map Mass2Motifs on mass spectral molecular network
+#'
+#' @param edges edges file from GNPS
+#' @param motifs motif summary table from MS2LDA
+#' @param prob minimal probability score for a Mass2Motif to be included. Default is 0.01. 
+#' @param overlap minimal overlap score for a Mass2Motif to be included. Default is 0.3.
+#' @param top parameter specifiying how many most shared motifs per molecular family (network component index) should be shown. Default is 5.
+#'
+#' @return edges and nodes file with Mass2Motifs mapped
+#' @export
+#'
+#' @examples
+#' @import stats 
 
 Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5){
   
@@ -29,7 +41,7 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   edges <- rbind(edges, edges_m)
   
   # add additional column in edges file containing the x most shared motifs per molecular family
-  agg <- aggregate(interact~ComponentIndex, data = edges_m[-which(edges_m$ComponentIndex == -1),], paste0, collapse=",")
+  agg <- stats::aggregate(interact~ComponentIndex, data = edges_m[-which(edges_m$ComponentIndex == -1),], paste0, collapse=",")
   
   agg_c <- strsplit(as.character(agg$interact),split = ",")
   c <- lapply(agg_c,plyr::count)
@@ -48,7 +60,7 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   
   # create node table containing overlap scores of motifs per node
   motifs[-1] = apply(motifs[-1],2,as.character)
-  motifs_cytoscape <- aggregate(motifs[-1],by=list(motifs$scans),c)
+  motifs_cytoscape <- stats::aggregate(motifs[-1],by=list(motifs$scans),c)
   
   ul <- function(lcol){
     if(is.list(lcol)==TRUE){
