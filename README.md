@@ -84,10 +84,10 @@ The only things you need to specify are:
 </li>
 </ol>
 
-To visualize results import the 'Mass2Motifs_Edges_Classical.tsv' output file as network into [Cytoscape](https://cytoscape.org/). Select column 'CLUSTERID1' as Source Node, column 'interact' as Interaction Type and 'CLUSTERID2' as Target Node:
+To visualize results import the 'Mass2Motifs_Edges_FeatureBased.tsv' output file as network into [Cytoscape](https://cytoscape.org/). Select column 'CLUSTERID1' as Source Node, column 'interact' as Interaction Type and 'CLUSTERID2' as Target Node:
 <img src="IMG/ImportEdges.png"/>
 
-Then import the 'Mass2Motifs_Nodes_Classical.tsv' output file as table:
+Then import the 'Mass2Motifs_Nodes_FeatureBased.tsv' output file as table:
 <img src="IMG/ImportNodes.png"/>
 
 To color edges based on shared Mass2Motifs in between nodes select 'Stroke Color' in the 'Edge' tab to the left and choose 'interaction' as <i>Column</i> and 'Discrete Mapping' as <i>Mapping Type</i>:
