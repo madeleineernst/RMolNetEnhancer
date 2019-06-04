@@ -100,6 +100,7 @@ To color nodes by the most shared Mass2Motifs per molecular family (network comp
 R version 3.4.2 (2017-09-28), devtools_2.0.1, plyr_1.8.4
 
 ## Main citation <a name="main_citation"></a>
+https://www.biorxiv.org/content/10.1101/654459v1 <br>
 https://github.com/madeleineernst/RMolNetEnhancer
 
 ## Other citations <a name="other_citations"></a>
