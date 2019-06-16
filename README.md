@@ -97,7 +97,7 @@ To color nodes by the most shared Mass2Motifs per molecular family (network comp
 <img src="IMG/MotifsMappedNodes.jpg"/>
 
 ## Dependencies
-R version 3.4.2 (2017-09-28), devtools_2.0.1, plyr_1.8.4
+R version 3.4.2 (2017-09-28), devtools_2.0.1, igraph_1.2.4.1, plyr_1.8.4, rCSCS_0.1.0, reticulate_1.12, rjson_0.2.20 
 
 ## Main citation <a name="main_citation"></a>
 https://www.biorxiv.org/content/10.1101/654459v1 <br>
