@@ -87,3 +87,26 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   
   return(list(edges = edges, nodes = mat))
 }
+
+#' make_classyfire_graphml
+#'
+#' @param graphML network file from GNPS (graphML)
+#' @param final dataframe containing most predominant chemical classes per node at each level of the ClassyFire chemical ontology
+#'
+#' @return network file with most predominant chemical classes per node mapped at each level of the ClassyFire chemical ontology (graphML)
+#' @export
+#'
+#' @examples
+#' @import igraph 
+
+make_classyfire_graphml <- function(graphML,final){
+    
+    finalordered <- final[match(vertex_attr(graphML,'id'),final$`cluster index`),]
+    
+    for (i in 1:ncol(final)){
+        att <- colnames(finalordered)[i]
+        vertex_attr(graphML,att) <- finalordered[,i]
+    }
+    
+    return(graphML)
+}
