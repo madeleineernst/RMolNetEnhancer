@@ -32,19 +32,19 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   }
   
   edges$SharedMotifs <- apply(edges[,c(1:2)], 1, shared_motifs)
-  edges$interact <- "cosine"
+  edges$interaction <- "cosine"
   
   # add additional rows for each shared motif, so each shared motif can be displayed with an individual edge
   l <- strsplit(edges$SharedMotifs,split=",")
   
   edges_m <- edges[rep(seq_len(dim(edges)[1]), lengths(l)), ]
-  edges_m$interact <- unlist(l)
+  edges_m$interaction <- unlist(l)
   edges <- rbind(edges, edges_m)
   
   # add additional column in edges file containing the x most shared motifs per molecular family
-  agg <- stats::aggregate(interact~ComponentIndex, data = edges_m[-which(edges_m$ComponentIndex == -1),], paste0, collapse=",")
+  agg <- stats::aggregate(interaction~ComponentIndex, data = edges_m[-which(edges_m$ComponentIndex == -1),], paste0, collapse=",")
   
-  agg_c <- strsplit(as.character(agg$interact),split = ",")
+  agg_c <- strsplit(as.character(agg$interaction),split = ",")
   c <- lapply(agg_c,plyr::count)
   topX <- lapply(c, function(x) x[order(x$freq,decreasing=T), ])
   topX <- lapply(topX, function(x) x[1:top,1])
@@ -54,7 +54,7 @@ Mass2Motif_2_Network <- function(edges,motifs,prob = 0.01,overlap = 0.3, top = 5
   edges$topX <- agg$topX[match(edges$ComponentIndex,agg$ComponentIndex)]
   
   # reorder columns
-  edges <- edges[,c("CLUSTERID1", "interact", "CLUSTERID2", "DeltaMZ", "MEH", "Cosine", 
+  edges <- edges[,c("CLUSTERID1", "interaction", "CLUSTERID2", "DeltaMZ", "MEH", "Cosine", 
                                   "OtherScore", "ComponentIndex", "SharedMotifs", "topX")]
   
   edges <- edges[order(edges$ComponentIndex),]
@@ -109,4 +109,45 @@ make_classyfire_graphml <- function(graphML,final){
     }
     
     return(graphML)
+}
+
+
+#' make_motif_graphml
+#'
+#' @param nodes A dataframe showing Mass2Motifs per node
+#' @param edges A dataframe showing shared Mass2Motifs for each network pair
+#'
+#' @return A network file with Mass2Motifs mapped on nodes and shared Mass2Motifs mapped as multiple edges (graphML)
+#' @export
+#'
+#' @examples
+#' @import igraph 
+
+make_motif_graphml <- function(nodes,edges){
+    
+    n1 <- which(colnames(edges) == 'CLUSTERID1')
+    n2 <- which(colnames(edges) == 'CLUSTERID2')
+    
+    edges[,n1] <- as.character(edges[,n1])
+    edges[,n2] <- as.character(edges[,n2])
+    
+    miss <- unique(c(edges$CLUSTERID1,edges$CLUSTERID2))[-which(unique(c(edges$CLUSTERID1,edges$CLUSTERID2)) %in% nodes$scans)]
+    n <- matrix("",length(miss),ncol(nodes))
+    n[,1] <- miss
+    n <- as.data.frame(n, stringsAsFactors = F)
+    colnames(n) <- colnames(nodes)
+    allnodes <- rbind(nodes, n)
+    
+    wmotifs <- grep('motif_',colnames(allnodes))
+    
+    for (i in 1:length(wmotifs)){
+        allnodes[,wmotifs[i]] <- as.numeric(as.character(allnodes[,wmotifs[i]]))
+    }
+    
+    edat <- which(colnames(edges) %in% (colnames(edges)[-which(colnames(edges) %in% c('CLUSTERID1','CLUSTERID2'))]))
+    
+    g <- graph_from_data_frame(edges[,c(n1,n2,2,4:10)], directed=FALSE, allnodes)
+    
+    return(g)
+    
 }
