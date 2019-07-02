@@ -147,6 +147,7 @@ make_motif_graphml <- function(nodes,edges){
     edat <- which(colnames(edges) %in% (colnames(edges)[-which(colnames(edges) %in% c('CLUSTERID1','CLUSTERID2'))]))
     
     g <- graph_from_data_frame(edges[,c(n1,n2,2,4:10)], directed=FALSE, allnodes)
+    names(vertex_attr(g))[which(names(vertex_attr(g)) == 'name')] <- 'id'
     
     return(g)
     
