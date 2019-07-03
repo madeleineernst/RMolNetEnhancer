@@ -7,6 +7,8 @@ RMolNetEnhancer is an R package integrating chemical class and substructure info
 * [Installation](#installation)
 * [Map MS2LDA substructural information to mass spectral molecular networks (classical)](#Mass2Motifs_to_Network_Classical)
 * [Map MS2LDA substructural information to mass spectral molecular networks (feature based)](#Mass2Motifs_to_Network_FeatureBased)
+* [Map chemical class information to mass spectral molecular networks](#ChemicalClasses_to_Network)
+* [Map chemical class and MS2LDA substructural information to mass spectral molecular networks](#ChemicalClasses_Motifs_to_Network)
 * [Dependencies](#dependencies)
 * [Main citation](#main_citation)
 * [Other citations](#other_citations)
@@ -119,14 +121,11 @@ The only things you need to specify are:
 You can specify as many <i>in silico</i> annotation outputs as you wish. If you import results from applications different than NAP or DEREPLICATOR make sure that your input file is tab separated and includes a column named 'Scan' containing numeric identifiers matching the numeric node identifiers in the GNPS network and a column named 'SMILES' containing SMILES structures.
 Make sure that you include all results as dataframe list items in the 'matches' object. The object 'gnpslib' contains all GNPS library hits:
 
- `matches = [gnpslib, nap, derep]`
+ `matches <- list(gnpslib, nap, derep, varquest)`
  
-In this notebook we use [ChemAxon's molconvert](https://docs.chemaxon.com/display/docs/Molconvert) to convert SMILES to InChIKeys. You can download a platform independent version of ChemAxon's Marvin [here](https://chemaxon.com/products/marvin/download). Make sure to have molconvert installed and add the path to the environment:
+In this notebook we use [ChemAxon's molconvert](https://docs.chemaxon.com/display/docs/Molconvert) to convert SMILES to InChIKeys. You can download a platform independent version of ChemAxon's Marvin [here](https://chemaxon.com/products/marvin/download). Make sure that the path to molconvert matches the path on you installed molconvert on your computer:
  
-```
-path = '/Applications/MarvinSuite/bin/'
-os.environ['PATH'] += ':'+path
-```
+<img src="IMG/MarvinPath.png"/>
 
 To visualize results import the .graphml output file into [Cytoscape](https://cytoscape.org/). To color nodes based on the chemical subclass select 'Fill Color' in the 'Node' tab to the left and choose 'CF_subclass' as <i>Column</i> and 'Discrete Mapping' as <i>Mapping Type</i>:
 <img src="IMG/ChemicalClassesMapped.png"/>
@@ -135,6 +134,19 @@ To color nodes based on the chemical subclass select 'Fill Color' in the 'Node' 
 <img src="IMG/ChemicalClassScoreMapped.png"/>
 
 All columns related to chemical class information are labeled with 'CF_', and chemical class information at other hierarchical levels of the chemical taxonomy can be mapped analogously (e.g. CF_superclass, CF_superclass_score, CF_class, etc.). The .txt output file can also be imported as table into an already existing network in Cytoscape.
+
+## Map chemical class and MS2LDA substructural information to mass spectral molecular networks <a name="ChemicalClasses_Motifs_to_Network"></a>
+
+In order to map chemical class and MS2LDA substructural information to a mass spectral molecular network follow steps described in [Map MS2LDA substructural information to mass spectral molecular networks (classical)](#Mass2Motifs_to_Network_Classical) and [Map chemical class information to mass spectral molecular networks](#ChemicalClasses_to_Network)
+for classical molecular networking and steps described in [Map MS2LDA substructural information to mass spectral molecular networks (feature based)](#Mass2Motifs_to_Network_FeatureBased) and [Map chemical class information to mass spectral molecular networks](#ChemicalClasses_to_Network) for feature based molecular networking. To create a graphml file containing both Mass2Motif as well as chemical class information do:
+
+```
+graphML_classy <- MolNetEnhancer::make_classyfire_graphml(MG, final)
+write_graph(graphML_classy, 'Motif_ChemicalClass_Network_Classical.graphml', format = "graphml")
+```
+
+where 'MG' corresponds to the network with mapped Mass2Motifs and 'final' to the dataframe output created when mapping chemical class information. An example is shown in [Example_notebooks/Mass2Motifs_2_Network_Classical.ipynb](https://github.com/madeleineernst/RMolNetEnhancer/blob/master/Example_notebooks/Mass2Motifs_2_Network_Classical.ipynb) and [Example_notebooks/Mass2Motifs_2_Network_FeatureBased.ipynb](https://github.com/madeleineernst/RMolNetEnhancer/blob/master/Example_notebooks/Mass2Motifs_2_Network_FeatureBased.ipynb). To visualize the network in Cytoscape proceed as described in [Map MS2LDA substructural information to mass spectral molecular networks (classical)](#Mass2Motifs_to_Network_Classical) and [Map chemical class information to mass spectral molecular networks](#ChemicalClasses_to_Network)
+for classical molecular networking and steps described in [Map MS2LDA substructural information to mass spectral molecular networks (feature based)](#Mass2Motifs_to_Network_FeatureBased) and [Map chemical class information to mass spectral molecular networks](#ChemicalClasses_to_Network) for feature based molecular networking.
 
 ## Dependencies
 R version 3.4.2 (2017-09-28), devtools_2.0.1, igraph_1.2.4.1, plyr_1.8.4, rCSCS_0.1.0, reticulate_1.12, rjson_0.2.20 <br>
