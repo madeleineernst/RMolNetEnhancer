@@ -46,17 +46,17 @@ The only things you need to specify are:
 </li>
 </ol>
 
-To visualize results import the 'Mass2Motifs_Edges_Classical.tsv' output file as network into [Cytoscape](https://cytoscape.org/). Select column 'CLUSTERID1' as Source Node, column 'interact' as Interaction Type and 'CLUSTERID2' as Target Node:
-<img src="IMG/ImportEdges.png"/>
-
-Then import the 'Mass2Motifs_Nodes_Classical.tsv' output file as table:
-<img src="IMG/ImportNodes.png"/>
-
-To color edges based on shared Mass2Motifs in between nodes select 'Stroke Color' in the 'Edge' tab to the left and choose 'interaction' as <i>Column</i> and 'Discrete Mapping' as <i>Mapping Type</i>:
+To visualize results import the .graphml output file into [Cytoscape](https://cytoscape.org/). To color edges based on shared Mass2Motifs in between nodes select 'Stroke Color' in the 'Edge' tab to the left and choose 'interaction' as <i>Column</i> and 'Discrete Mapping' as <i>Mapping Type</i>:
 <img src="IMG/MotifsMappedEdges.png"/>
 
 To color nodes by the most shared Mass2Motifs per molecular family (network component index) select 'Image/Chart' in the 'Node' tab to the left and select Mass2Motifs shown in 'TopSharedMotifs' in the Edge Table:
 <img src="IMG/MotifsMappedNodes.jpg"/>
+
+Alternatively the edges and nodes output files can also be loaded separately into Cytoscape. To this end import the 'Mass2Motifs_Edges_Classical.tsv' output file as network into Cytoscape. Select column 'CLUSTERID1' as Source Node, column 'interact' as Interaction Type and 'CLUSTERID2' as Target Node:
+<img src="IMG/ImportEdges.png"/>
+
+Then import the 'Mass2Motifs_Nodes_Classical.tsv' output file as table:
+<img src="IMG/ImportNodes.png"/>
 
 ## Map MS2LDA substructural information to mass spectral molecular networks (feature based) <a name="Mass2Motifs_to_Network_FeatureBased"></a>
 
