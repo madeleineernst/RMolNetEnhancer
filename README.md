@@ -123,7 +123,7 @@ Make sure that you include all results as dataframe list items in the 'matches' 
 
  `matches <- list(gnpslib, nap, derep, varquest)`
  
-In this notebook we use [ChemAxon's molconvert](https://docs.chemaxon.com/display/docs/Molconvert) to convert SMILES to InChIKeys. You can download a platform independent version of ChemAxon's Marvin [here](https://chemaxon.com/products/marvin/download). Make sure that the path to molconvert matches the path on you installed molconvert on your computer:
+In this notebook we use [ChemAxon's molconvert](https://docs.chemaxon.com/display/docs/Molconvert) to convert SMILES to InChIKeys. You can download a platform independent version of ChemAxon's Marvin [here](https://chemaxon.com/products/marvin/download). Make sure that the path to molconvert matches the path you installed molconvert on your computer:
  
 <img src="IMG/MarvinPath.png"/>
 
