@@ -1,9 +1,10 @@
 Package: MolNetEnhancer
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Type: Package
+Title: R package to 'MolNetEnhancer: enhanced molecular networks by integrating metabolome mining and annotation tools'
+Version: 0.0.2
+Authors@R: Madeleine Ernst [aut,cre], Kyo Bin Kang [aut], Andrés Mauricio Caraballo-Rodríguez [aut], Louis-Felix Nothias [aut], Joe Wandy [aut,cre], Mingxun Wang [aut,cre], Simon Rogers [aut], Marnix H. Medema [aut], Pieter C. Dorrestein [aut], Justin J.J. van der Hooft [aut]
+Maintainer: Madeleine Ernst <maet@ssi.dk>
+Description:  Metabolomics has started to embrace computational approaches for chemical interpretation of large data sets. Yet, metabolite annotation remains a key challenge. MolNetEnhancer is a workflow that combines the outputs from GNPS molecular networking, MS2LDA substructure discovery, in silico annotation tools (such as Network Annotation Propagation or DEREPLICATOR) and the automated chemical classification through ClassyFire to provide a more comprehensive chemical overview of metabolomics data whilst at the same time illuminating structural details for each fragmentation spectrum. 
 Depends: R (>= 3.4.2)
-License: What license is it under?
+License: MIT
 Encoding: UTF-8
-LazyData: true
