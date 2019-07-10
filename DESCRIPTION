@@ -13,4 +13,7 @@ Imports:
     rCSCS,
     reticulate,
     rjson,
-    devtools
+    devtools,
+    igraph,
+    foreach,
+    remotes
