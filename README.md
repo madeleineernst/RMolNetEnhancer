@@ -18,7 +18,7 @@ RMolNetEnhancer is an R package integrating chemical class and substructure info
 
 Install RMolNetEnhancer with:
 
- `install.packages("devtools")`
+ `install.packages("devtools")` <br>
  `devtools::install_github("madeleineernst/RMolNetEnhancer")`
 
 ## Map MS2LDA substructural information to mass spectral molecular networks (classical) <a name="Mass2Motifs_to_Network_Classical"></a>
